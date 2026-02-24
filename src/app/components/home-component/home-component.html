@@ -1,3 +1,10 @@
+<!-- Información de búsqueda -->
+@if (terminoBusqueda()) {
+  <div class="alert alert-info mb-3">
+    <strong>{{ clientesFiltrados().length }}</strong> resultado(s) encontrado(s) para: <strong>"{{ terminoBusqueda() }}"</strong>
+  </div>
+}
+
 <table class="table table-striped table-hover">
   <thead class="table-dark">
     <tr>
@@ -13,8 +20,26 @@
     </tr>
   </thead>
   <tbody>
-    @for (c of clientes; track c.id) {
+    @if (clientesFiltrados().length === 0 && terminoBusqueda()) {
       <tr>
+        <td colspan="9" class="text-center py-4">
+          <div class="text-muted">
+            <i class="bi bi-search"></i>
+            <p class="mb-0">No se encontraron resultados para "{{ terminoBusqueda() }}"</p>
+          </div>
+        </td>
+      </tr>
+    } @else if (clientesFiltrados().length === 0) {
+      <tr>
+        <td colspan="9" class="text-center py-4">
+          <div class="text-muted">
+            <p class="mb-0">No hay clientes registrados</p>
+          </div>
+        </td>
+      </tr>
+    } @else {
+      @for (c of clientesFiltrados(); track c.id) {
+        <tr>
         <td>{{ c.id }}</td>
         <td>{{ c.nombre }}</td>
         <td>{{ c.genero }}</td>
@@ -28,15 +53,19 @@
           </span>
         </td>
         <td class="text-center">
-        <button class="btn btn-warning btn-sm me-2">
-          Editar
-        </button>
-
-        <button class="btn btn-danger btn-sm">
-          Eliminar
-        </button>
-      </td>
+          <button class="btn btn-warning btn-sm me-2" (click)="abrirModalEditar(c)">Editar</button>
+          <button class="btn btn-danger btn-sm" (click)="eliminarCliente(c.id!)">Eliminar</button>
+        </td>
       </tr>
+      }
     }
   </tbody>
 </table>
+
+<!-- Modal de Cliente -->
+<app-cliente-modal 
+  [isOpen]="modalAbierto()"
+  [cliente]="clienteSeleccionado"
+  (onGuardar)="guardarCliente($event)"
+  (onCancelar)="cerrarModal()">
+</app-cliente-modal>

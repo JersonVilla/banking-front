@@ -1,0 +1,181 @@
+@if (isOpenSignal()) {
+  <div class="modal-backdrop fade show"></div>
+  
+  <!-- Modal -->
+  <div class="modal fade show d-block" tabindex="-1" role="dialog" (click)="cancelar()">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <!-- Header -->
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title">
+            {{ modoEdicion() ? 'Editar Cliente' : 'Nuevo Cliente' }}
+          </h5>
+          <button type="button" class="btn-close btn-close-white" (click)="cancelar()"></button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+          <form [formGroup]="clienteForm">
+            <div class="row">
+              <!-- Nombre -->
+              <div class="col-12 col-md-6 mb-3">
+                <label for="nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="nombre"
+                  formControlName="nombre"
+                  [class.is-invalid]="isFieldInvalid('nombre')"
+                  placeholder="Ingrese el nombre completo">
+                @if (hasError('nombre', 'required')) {
+                  <div class="invalid-feedback">El nombre es requerido</div>
+                }
+                @if (hasError('nombre', 'minlength')) {
+                  <div class="invalid-feedback">El nombre debe tener al menos 3 caracteres</div>
+                }
+              </div>
+
+              <!-- Género -->
+              <div class="col-12 col-md-6 mb-3">
+                <label for="genero" class="form-label">Género <span class="text-danger">*</span></label>
+                <select 
+                  class="form-select" 
+                  id="genero"
+                  formControlName="genero"
+                  [class.is-invalid]="isFieldInvalid('genero')">
+                  <option value="">Seleccione...</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Femenino">Femenino</option>
+                  <option value="Otro">Otro</option>
+                </select>
+                @if (hasError('genero', 'required')) {
+                  <div class="invalid-feedback">El género es requerido</div>
+                }
+              </div>
+
+              <!-- Edad -->
+              <div class="col-12 col-sm-6 mb-3">
+                <label for="edad" class="form-label">Edad <span class="text-danger">*</span></label>
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  id="edad"
+                  formControlName="edad"
+                  [class.is-invalid]="isFieldInvalid('edad')"
+                  placeholder="Ingrese la edad">
+                @if (hasError('edad', 'required')) {
+                  <div class="invalid-feedback">La edad es requerida</div>
+                }
+                @if (hasError('edad', 'min') || hasError('edad', 'max')) {
+                  <div class="invalid-feedback">La edad debe estar entre 18 y 120 años</div>
+                }
+              </div>
+
+              <!-- Identificación -->
+              <div class="col-12 col-sm-6 mb-3">
+                <label for="identificacion" class="form-label">Identificación <span class="text-danger">*</span></label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="identificacion"
+                  formControlName="identificacion"
+                  [class.is-invalid]="isFieldInvalid('identificacion')"
+                  placeholder="Ingrese el número de identificación">
+                @if (hasError('identificacion', 'required')) {
+                  <div class="invalid-feedback">La identificación es requerida</div>
+                }
+                @if (hasError('identificacion', 'minlength')) {
+                  <div class="invalid-feedback">La identificación debe tener al menos 5 caracteres</div>
+                }
+              </div>
+
+              <!-- Dirección -->
+              <div class="col-md-12 mb-3">
+                <label for="direccion" class="form-label">Dirección <span class="text-danger">*</span></label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="direccion"
+                  formControlName="direccion"
+                  [class.is-invalid]="isFieldInvalid('direccion')"
+                  placeholder="Ingrese la dirección completa">
+                @if (hasError('direccion', 'required')) {
+                  <div class="invalid-feedback">La dirección es requerida</div>
+                }
+              </div>
+
+              <!-- Teléfono -->
+              <div class="col-12 col-sm-6 mb-3">
+                <label for="telefono" class="form-label">Teléfono <span class="text-danger">*</span></label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="telefono"
+                  formControlName="telefono"
+                  [class.is-invalid]="isFieldInvalid('telefono')"
+                  placeholder="Ingrese el teléfono (10 dígitos)">
+                @if (hasError('telefono', 'required')) {
+                  <div class="invalid-feedback">El teléfono es requerido</div>
+                }
+                @if (hasError('telefono', 'pattern')) {
+                  <div class="invalid-feedback">El teléfono debe tener 10 dígitos</div>
+                }
+              </div>
+
+              <!-- Estado (Activo) -->
+              <div class="col-12 col-sm-6 mb-3 d-flex align-items-end">
+                <div class="form-check">
+                  <input 
+                    class="form-check-input" 
+                    type="checkbox" 
+                    id="estado"
+                    formControlName="estado">
+                  <label class="form-check-label" for="estado">
+                    Activo
+                  </label>
+                </div>
+              </div>
+              @if (!modoEdicion()) {
+                <div class="col-12 mb-3">
+                  <label for="contrasena" class="form-label">
+                    Contraseña <span class="text-danger">*</span>
+                  </label>
+                  <input 
+                    type="password"
+                    class="form-control"
+                    id="contrasena"
+                    formControlName="contrasena"
+                    [class.is-invalid]="isFieldInvalid('contrasena')"
+                    placeholder="Ingrese la contraseña">
+                    
+                  @if (hasError('contrasena', 'required')) {
+                    <div class="invalid-feedback">La contraseña es requerida</div>
+                  }
+                  @if (hasError('contrasena', 'minlength')) {
+                    <div class="invalid-feedback">
+                      La contraseña debe tener al menos 6 caracteres
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cancelar()">
+            Cancelar
+          </button>
+          <button 
+            type="button" 
+            class="btn btn-primary" 
+            (click)="guardar()"
+            [disabled]="clienteForm.invalid">
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

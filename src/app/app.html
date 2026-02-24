@@ -17,13 +17,19 @@
         <nav class="navbar bg-body-tertiary border-bottom px-4">
           <div class="container-fluid d-flex justify-content-between px-0">
             <!-- BUSCADOR -->
-            <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Buscar..." />
-              <button class="btn btn-outline-success">Buscar</button>
+            <form class="d-flex" (submit)="buscar(); $event.preventDefault()">
+              <input 
+                class="form-control me-2" 
+                type="search" 
+                placeholder="Buscar..." 
+                [(ngModel)]="terminoBusqueda"
+                (input)="onBusquedaChange()"
+                name="busqueda" />
+              <button class="btn btn-outline-success" type="submit">Buscar</button>
             </form>
 
             <!-- BOTÓN NUEVO -->
-            <button class="btn btn-warning">+ Nuevo</button>
+            <button class="btn btn-warning" (click)="abrirModal()">+ Nuevo</button>
           </div>
         </nav>
 
@@ -35,3 +41,11 @@
     </div>
   </div>
 </div>
+
+<!-- Modal de Cliente -->
+<app-cliente-modal 
+  [isOpen]="modalAbierto()"
+  [cliente]="clienteSeleccionado"
+  (onGuardar)="guardarCliente($event)"
+  (onCancelar)="cerrarModal()">
+</app-cliente-modal>
