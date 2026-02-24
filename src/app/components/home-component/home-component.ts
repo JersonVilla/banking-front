@@ -4,6 +4,7 @@ import { ClienteService } from '../../services/cliente-service';
 import { CommonModule } from '@angular/common';
 import { ClienteModalComponent } from '../cliente-modal/cliente-modal-component';
 import Swal from 'sweetalert2';
+import { LayoutService } from '../../services/layout-service';
 
 @Component({
   selector: 'app-home-component',
@@ -19,10 +20,13 @@ export class HomeComponent implements OnInit {
   clienteSeleccionado: Cliente | null = null;
   terminoBusqueda = signal<string>('');
 
-  constructor(private clienteService: ClienteService) {
+  constructor(private clienteService: ClienteService, private layoutService: LayoutService) {
     this.clienteService.terminoBusqueda$.subscribe((termino) => {
       this.terminoBusqueda.set(termino);
       this.filtrarClientes();
+    });
+    this.layoutService.nuevo$.subscribe(() => {
+      this.abrirModalNuevo();
     });
   }
 
@@ -143,10 +147,11 @@ export class HomeComponent implements OnInit {
             this.cargarClientes();
           },
           error: (error) => {
+            const mensaje = error?.error?.message || 'No se pudo eliminar el cliente';
             Swal.fire({
               icon: 'error',
               title: 'Error',
-              text: 'No se pudo eliminar el cliente',
+              text: mensaje,
             });
 
             console.error(error);
@@ -156,8 +161,18 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  actualizarBusqueda(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.terminoBusqueda.set(value);
+    this.filtrarClientes();
+  }
+
   cerrarModal(): void {
     this.modalAbierto.set(false);
     this.clienteSeleccionado = null;
+  }
+  abrirModalNuevo(): void {
+    this.clienteSeleccionado = null;
+    this.modalAbierto.set(true);
   }
 }
