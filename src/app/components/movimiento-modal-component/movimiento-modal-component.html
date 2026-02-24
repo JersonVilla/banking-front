@@ -1,0 +1,48 @@
+@if (isOpen) {
+  <div class="modal fade show d-block" (click)="cerrar()">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title">Nuevo Movimiento</h5>
+          <button class="btn-close btn-close-white" (click)="cerrar()"></button>
+        </div>
+
+        <div class="modal-body">
+          <form [formGroup]="movimientoForm">
+            <!-- Seleccionar Cuenta -->
+            <div class="mb-3">
+              <label>Número de Cuenta</label>
+              <select class="form-select" formControlName="numeroCuenta">
+                <option value="">Seleccione...</option>
+                <option *ngFor="let cuenta of cuentasDisponibles" [value]="cuenta">
+                  {{ cuenta }}
+                </option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label>Tipo de Movimiento</label>
+              <select class="form-select" formControlName="tipoMovimiento">
+                <option *ngFor="let tipo of tipoMovimientos" [value]="tipo">
+                  {{ tipo }}
+                </option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label>Valor</label>
+              <input type="number" class="form-control" formControlName="valor" />
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="cerrar()">Cancelar</button>
+          <button class="btn btn-primary" (click)="guardar()" [disabled]="movimientoForm.invalid">
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

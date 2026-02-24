@@ -1,0 +1,63 @@
+@if (terminoBusqueda()) {
+  <div class="alert alert-info mb-3">
+    <strong>{{ movimientosFiltrados().length }}</strong> resultado(s) encontrado(s) para:
+    <strong>"{{ terminoBusqueda() }}"</strong>
+  </div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div class="w-50">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Buscar movimiento..."
+      [value]="terminoBusqueda()"
+      (input)="actualizarBusqueda($event)"
+    />
+  </div>
+</div>
+
+@if (movimientosFiltrados().length === 0) {
+  <div class="alert alert-info">No hay movimientos registrados</div>
+} @else {
+  <table class="table table-bordered table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>Cliente</th>
+        <th>Cuenta</th>
+        <th>Fecha</th>
+        <th>Saldo Inicial</th>
+        <th>Tipo Movimiento</th>
+        <th>Movimiento</th>
+        <th>Saldo Disponible</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (movimiento of movimientosFiltrados(); track movimiento.numeroCuenta) {
+        <tr>
+          <td>{{ movimiento.cliente }}</td>
+          <td>{{ movimiento.numeroCuenta }}</td>
+          <td>{{ movimiento.fecha }}</td>
+          <td>{{ movimiento.saldoInicial | currency }}</td>
+          <td>{{ movimiento.tipoMovimiento }}</td>
+          <td>{{ movimiento.movimiento }}</td>
+          <td>{{ movimiento.saldoDisponible | currency }}</td>
+          <td>
+            <span class="badge" [ngClass]="movimiento.estado ? 'bg-success' : 'bg-danger'">
+              {{ movimiento.estado ? 'Activa' : 'Inactiva' }}
+            </span>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+
+<app-movimiento-modal
+  [isOpen]="modalAbierto()"
+  [movimiento]="movimientoSeleccionado"
+  [cuentasDisponibles]="cuentasDisponibles"
+  (onGuardar)="guardarMovimiento($event)"
+  (onCancelar)="cerrarModal()">
+</app-movimiento-modal>
