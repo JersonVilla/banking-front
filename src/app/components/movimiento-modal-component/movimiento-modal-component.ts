@@ -26,7 +26,6 @@ export class MovimientoModalComponent {
 
   constructor(
     private fb: FormBuilder,
-    private movimientoService: MovimientoService,
   ) {}
 
   ngOnInit(): void {
@@ -53,18 +52,14 @@ export class MovimientoModalComponent {
   }
 
   guardar() {
-    if (this.movimientoForm.invalid) return;
-
-    const payload: Movimiento = {
-      ...this.movimientoForm.value,
-      cliente: '',
-      estado: true,
-      fecha: new Date().toISOString(),
-      saldoInicial: 0,
-      saldoDisponible: 0
-    };
-
-    this.onGuardar.emit(payload);
-  }
-
+      if (this.movimientoForm.valid) {
+        const movimiento: Movimiento = {
+          ...this.movimientoForm.getRawValue()
+        };
+  
+        this.onGuardar.emit(movimiento);
+      } else {
+        this.movimientoForm.markAllAsTouched();
+      }
+    }
 }

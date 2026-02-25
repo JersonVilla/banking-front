@@ -71,7 +71,6 @@ export class HomeComponent implements OnInit {
   }
 
   abrirModalEditar(cliente: Cliente): void {
-    console.log('Cliente seleccionado para editar:', cliente);
     this.clienteSeleccionado = cliente;
     this.modalAbierto.set(true);
   }

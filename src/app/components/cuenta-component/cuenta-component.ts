@@ -40,7 +40,6 @@ export class CuentaComponent {
   }
 
   abrirModalEditar(cuenta: Cuenta): void {
-    console.log('Cliente seleccionado para editar:', cuenta);
     this.cuentaSeleccionado = cuenta;
     this.modalAbierto.set(true);
   }
@@ -147,7 +146,7 @@ export class CuentaComponent {
     const filtradas = this.cuentas().filter(
       (c) =>
         c.numeroCuenta.toLowerCase().includes(termino) ||
-        c.nombreCliente.toLowerCase().includes(termino) ||
+        c.nombreCliente!.toLowerCase().includes(termino) ||
         c.tipoCuenta.toLowerCase().includes(termino) ||
         c.estado.toString().toLowerCase().includes(termino),
     );

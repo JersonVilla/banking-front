@@ -32,4 +32,8 @@ export class CuentaService {
     deleteCuenta(numeroCuenta: string): Observable<void> {
       return this.http.delete<void>(`${this.apiUrl}/${numeroCuenta}`);
     }
+
+    getCuentasActivas(): Observable<Cuenta[]> {
+      return this.http.get<Cuenta[]>(`${this.apiUrl}/activas`);
+    }
 }

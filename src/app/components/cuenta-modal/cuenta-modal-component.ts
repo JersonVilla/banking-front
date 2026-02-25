@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Cuenta } from '../../common/cuenta';
+import { ClienteBasic } from '../../common/cliente-basic';
+import { ClienteService } from '../../services/cliente-service';
 
 @Component({
   selector: 'app-cuenta-modal',
@@ -13,8 +15,10 @@ import { Cuenta } from '../../common/cuenta';
 export class CuentaModalComponent {
 
   @Input() isOpen = false;
+  clientes = signal<ClienteBasic[]>([]);
 
   @Input() set cuenta(value: Cuenta | null) {
+    this.cargarClientesActivos();
     if (value) {
       this.modoEdicion.set(true);
       this.form.patchValue(value);
@@ -35,10 +39,10 @@ export class CuentaModalComponent {
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private clienteService: ClienteService) {
     this.form = this.fb.group({
       numeroCuenta: ['', Validators.required],
-      nombreCliente: ['', Validators.required],
+      clienteId: ['', Validators.required],
       tipoCuenta: ['', Validators.required],
       saldoInicial: [0, [Validators.required, Validators.min(0)]],
       estado: [true]
@@ -55,6 +59,13 @@ export class CuentaModalComponent {
     } else {
       this.form.markAllAsTouched();
     }
+  }
+
+  cargarClientesActivos() {
+    this.clienteService.getClientesActivos().subscribe({
+      next: (data) => this.clientes.set(data),
+      error: (err) => console.error('Error cargando clientes', err)
+    });
   }
 
   cerrar() {

@@ -17,7 +17,6 @@
         <div class="modal-body">
           <form [formGroup]="clienteForm">
             <div class="row">
-              <!-- Nombre -->
               <div class="col-12 col-md-6 mb-3">
                 <label for="nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
                 <input 
@@ -35,7 +34,6 @@
                 }
               </div>
 
-              <!-- Género -->
               <div class="col-12 col-md-6 mb-3">
                 <label for="genero" class="form-label">Género <span class="text-danger">*</span></label>
                 <select 
@@ -53,7 +51,6 @@
                 }
               </div>
 
-              <!-- Edad -->
               <div class="col-12 col-sm-6 mb-3">
                 <label for="edad" class="form-label">Edad <span class="text-danger">*</span></label>
                 <input 
@@ -71,7 +68,6 @@
                 }
               </div>
 
-              <!-- Identificación -->
               <div class="col-12 col-sm-6 mb-3">
                 <label for="identificacion" class="form-label">Identificación <span class="text-danger">*</span></label>
                 <input 
@@ -89,7 +85,6 @@
                 }
               </div>
 
-              <!-- Dirección -->
               <div class="col-md-12 mb-3">
                 <label for="direccion" class="form-label">Dirección <span class="text-danger">*</span></label>
                 <input 
@@ -104,7 +99,6 @@
                 }
               </div>
 
-              <!-- Teléfono -->
               <div class="col-12 col-sm-6 mb-3">
                 <label for="telefono" class="form-label">Teléfono <span class="text-danger">*</span></label>
                 <input 
@@ -122,7 +116,6 @@
                 }
               </div>
 
-              <!-- Estado (Activo) -->
               <div class="col-12 col-sm-6 mb-3 d-flex align-items-end">
                 <div class="form-check">
                   <input 
@@ -161,8 +154,7 @@
             </div>
           </form>
         </div>
-
-        <!-- Footer -->
+        
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="cancelar()">
             Cancelar

@@ -1,0 +1,29 @@
+<div class="card p-4">
+  <h4>Generar Reporte de Movimientos</h4>
+
+  <form [formGroup]="reportesForm" (ngSubmit)="generarReporte()">
+    <div class="mb-3">
+      <label>Número de Cuenta</label>
+      <select class="form-select" formControlName="numeroCuenta">
+        <option value="">Seleccione...</option>
+        <option *ngFor="let cuenta of cuentas" [value]="cuenta">
+          {{ cuenta }}
+        </option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label>Fecha Inicio</label>
+      <input type="date" class="form-control" formControlName="fechaInicio" />
+    </div>
+
+    <div class="mb-3">
+      <label>Fecha Fin</label>
+      <input type="date" class="form-control" formControlName="fechaFin" />
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="reportesForm.invalid">
+      Generar Reporte
+    </button>
+  </form>
+</div>

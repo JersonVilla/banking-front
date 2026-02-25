@@ -54,7 +54,7 @@ export class ClienteModalComponent {
     });
   }
 
-  // Método público para acceder al signal
+  //Método público para acceder al signal
   isOpenSignal() {
     return this._isOpen();
   }
@@ -130,8 +130,7 @@ export class ClienteModalComponent {
     this.clienteForm.reset({ estado: true });
     this.modoEdicion.set(false);
   }
-
-  // Help_ers para validaciones en el template
+  
   hasError(field: string, error: string): boolean {
     const control = this.clienteForm.get(field);
     return !!(control?.hasError(error) && control?.touched);

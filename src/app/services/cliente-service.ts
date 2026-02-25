@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, delay, Observable, of } from 'rxjs';
 import { Cliente } from '../common/cliente';
 import { HttpClient } from '@angular/common/http';
+import { ClienteBasic } from '../common/cliente-basic';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +34,10 @@ export class ClienteService {
 
   deleteCliente(id: number): Observable<void> {
     return this.httpClient.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  getClientesActivos(): Observable<ClienteBasic[]> {
+    return this.httpClient.get<ClienteBasic[]>(`${this.apiUrl}/activos`);
   }
 
 }

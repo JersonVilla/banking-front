@@ -5,6 +5,7 @@ import { LayoutService } from '../../services/layout-service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { MovimientoModalComponent } from '../movimiento-modal-component/movimiento-modal-component';
+import { CuentaService } from '../../services/cuenta-service';
 
 @Component({
   selector: 'app-movimiento-component',
@@ -19,12 +20,15 @@ export class MovimientoComponent {
   modalAbierto = signal<boolean>(false);
   terminoBusqueda = signal<string>('');
   movimientosFiltrados = signal<Movimiento[]>([]);
+  cuentasDisponibles: string[] = [];
 
   constructor(
     private movimientoService: MovimientoService,
+    private cuentaService: CuentaService,
     private layoutService: LayoutService,
   ) {
     this.cargarMovimientos();
+    this.cargarCuentasActivas();
     this.layoutService.nuevo$.subscribe(() => {
       this.abrirModalNueva();
     });
@@ -37,6 +41,15 @@ export class MovimientoComponent {
         this.movimientosFiltrados.set(data);
       },
       error: (err) => console.error(err),
+    });
+  }
+
+  cargarCuentasActivas() {
+    this.cuentaService.getCuentasActivas().subscribe({
+      next: (cuentas) => {
+        this.cuentasDisponibles = cuentas.map(c => c.numeroCuenta);
+      },
+      error: (err) => console.error('Error cargando cuentas activas', err),
     });
   }
 
@@ -102,6 +115,7 @@ export class MovimientoComponent {
 
     const filtradas = this.movimientos().filter(
       (c) =>
+        c.cliente.toLowerCase().includes(termino) ||
         c.numeroCuenta.toLowerCase().includes(termino) ||
         c.tipoCuenta.toLowerCase().includes(termino) ||
         c.estado.toString().toLowerCase().includes(termino) ||
@@ -109,11 +123,6 @@ export class MovimientoComponent {
     );
 
     this.movimientosFiltrados.set(filtradas);
-  }
-
-  get cuentasDisponibles(): string[] {
-    const cuentas = this.movimientos().map(m => m.numeroCuenta);
-    return Array.from(new Set(cuentas));
   }
 
   abrirModalNueva(): void {
